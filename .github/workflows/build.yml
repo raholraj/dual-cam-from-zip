@@ -18,6 +18,23 @@ jobs:
 
       - uses: android-actions/setup-android@v3
 
+      - name: Reconstruct large source files
+        run: |
+          python3 << 'PY'
+          import base64, gzip
+          from pathlib import Path
+          def restore(b64path, outpath):
+              data = gzip.decompress(base64.b64decode(Path(b64path).read_text().strip()))
+              Path(outpath).parent.mkdir(parents=True, exist_ok=True)
+              Path(outpath).write_bytes(data)
+              print(f"restored {outpath} ({len(data)} bytes)")
+          Path("MainActivity.kt.b64").write_text(
+              Path("main.b64.1").read_text().strip() + Path("main.b64.2").read_text().strip()
+          )
+          restore("MainActivity.kt.b64", "app/src/main/java/com/rahol/dualcam/MainActivity.kt")
+          restore("activity_main.xml.b64", "app/src/main/res/layout/activity_main.xml")
+          PY
+
       - name: Setup Gradle wrapper
         run: |
           if [ ! -f gradlew ]; then
