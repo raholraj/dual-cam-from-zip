@@ -23,7 +23,7 @@ jobs:
           python3 << 'PY'
           import base64, gzip
           from pathlib import Path
-          parts = [].join([Path(f"main.chunk.{i}").read_text().strip() for i in range(5)])
+          parts = "".join([Path(f"main.chunk.{i}").read_text().strip() for i in range(5)])
           Path("MainActivity.kt.b64").write_text(parts)
           def restore(b64path, outpath):
               data = gzip.decompress(base64.b64decode(Path(b64path).read_text().strip()))
