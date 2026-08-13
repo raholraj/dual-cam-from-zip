@@ -1,2 +1,3 @@
-# dual-cam-from-zip
-Dual Cam app - pure code from user zip
+# Dual Cam
+
+Pure dual camera app source from zip. Build APK via GitHub Actions.
